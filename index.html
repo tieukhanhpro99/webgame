@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Con Rắn</title>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <script>
+      // Lấy đối tượng canvas
+      var canvas = document.getElementById("canvas");
+
+      // Lấy đối tượng context để vẽ trên canvas
+      var ctx = canvas.getContext("2d");
+
+      // Thiết lập kích thước ô vuông
+      var gridSize = 10;
+
+      // Tạo một đối tượng con rắn với vị trí ban đầu
+      var snake = {
+        x: 10,
+        y: 10,
+        dx: gridSize,
+        dy: 0,
+        cells: [],
+        maxCells: 4,
+      };
+
+      // Tạo một đối tượng thức ăn ngẫu nhiên
+      var food = {
+        x: Math.floor(Math.random() * canvas.width / gridSize) * gridSize,
+        y: Math.floor(Math.random() * canvas.height / gridSize) * gridSize,
+      };
+
+      // Khởi tạo hàm vẽ con rắn và thức ăn
+      function draw() {
+        // Di chuyển con rắn bằng cách thêm một ô vuông vào đầu và xoá một ô vuông ở đuôi
+        snake.x += snake.dx;
+        snake.y += snake.dy;
+
+        // Kiểm tra xem con rắn có chạm tường hay không
+        if (
+          snake.x < 0 ||
+          snake.x >= canvas.width ||
+          snake.y < 0 ||
+          snake.y >= canvas.height
+        ) {
+          // Nếu con rắn chạm tường thì kết thúc trò chơi
+          alert("Game over!");
+          location.reload();
+        }
+
+        // Thêm một ô vuông vào đầu con rắn
+        snake.cells.unshift({ x: snake.x, y: snake.y });
+
+        // Xoá một ô vuông ở đuôi con rắn nếu độ dài của nó vượt quá giới hạn
+        if (snake.cells.length > snake.maxCells) {
+          snake.cells.pop();
+        }
+
+        // Vẽ các ô vuông của con rắn
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "green";
+        snake.cells.forEach(function (cell, index) {
+          ctx.fillRect(cell.x, cell.y, gridSize, gridSize);
+
+          // Kiểm tra xem con rắn có ăn được thức ăn không
+          if (cell.x === food.x && cell.y === food.y) {
+            snake.maxCells++;
+
+            // Tạo một thức ăn ngẫu nhiên mới
+            food.x = Math.floor(Math.random() * canvas.width / gridSize) * gridSize;
+            food.y = Math.floor(Math.random() * canvas.height / gridSize) * gridSize;
+          }
+
+          // Kiểm tra xem con rắn có đâm vào chính mình không
+          for (var i = index + 1; i < snake.cells.length; i++) {
+            if (cell.x === snake.cells[i].x && cell.y=== snake.cells[i].y) {
+          // Nếu con rắn đâm vào chính mình thì kết thúc trò chơi
+              alert("Game over!");
+              location.reload();
+     }
+   }
+  });
+    // Vẽ thức ăn
+    ctx.fillStyle = "red";
+    ctx.fillRect(food.x, food.y, gridSize, gridSize);
+
+    // Sử dụng hàm requestAnimationFrame để lặp lại vẽ màn hình
+    requestAnimationFrame(draw);
+  }
+
+  // Gán sự kiện bàn phím để điều khiển con rắn
+  document.addEventListener("keydown", function (e) {
+    // Lấy phím được nhấn
+    var key = e.which;
+
+    // Kiểm tra xem phím đó là phím mũi tên nào
+    if (key === 37 && snake.dx === 0) {
+      snake.dx = -gridSize;
+      snake.dy = 0;
+    } else if (key === 38 && snake.dy === 0) {
+      snake.dy = -gridSize;
+      snake.dx = 0;
+    } else if (key === 39 && snake.dx === 0) {
+      snake.dx = gridSize;
+      snake.dy = 0;
+    } else if (key === 40 && snake.dy === 0) {
+      snake.dy = gridSize;
+      snake.dx = 0;
+    }
+  });
+
+  // Khởi động trò chơi
+  draw();
+</script>
+</body>
+</html>
+
