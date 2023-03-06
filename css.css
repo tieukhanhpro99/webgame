@@ -1,0 +1,40 @@
+body {
+  background-image: url("background.jpg");
+  background-size: cover;
+}
+.container {
+  width: 600px;
+  height: 600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ccc;
+  border: 5px solid #333;
+}
+.logo {
+  width: 200px;
+  height: 200px;
+  background-image: url("logo.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-bottom: 50px;
+}
+
+.apple {
+  width: 20px;
+  height: 20px;
+  background-image: url("apple.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.snake {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #333;
+}
+.selected {
+  background-color: #ff0;
+}
+
